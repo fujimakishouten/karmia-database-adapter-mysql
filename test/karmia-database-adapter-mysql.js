@@ -7,6 +7,7 @@
 
 // Variables
 const expect = require('expect.js'),
+    sequelize = require('sequelize'),
     adapter = require('../'),
     schema = require('./resource/schema'),
     fixture = require('./resource/user'),
@@ -33,7 +34,7 @@ describe('karmia-database-adapter-mysql', function () {
             const database = adapter(options);
             database.connect().then(function () {
                 const connection = database.getConnection();
-                expect(connection.constructor.name).to.be('Sequelize');
+                expect(Object.getPrototypeOf(connection)).to.be(sequelize.prototype);
 
                 done();
             });
@@ -46,7 +47,7 @@ describe('karmia-database-adapter-mysql', function () {
                 const database = adapter(options);
                 database.connect().then(function () {
                     const connection = database.getConnection();
-                    expect(connection.constructor.name).to.be('Sequelize');
+                    expect(Object.getPrototypeOf(connection)).to.be(sequelize.prototype);
 
                     done();
                 }).catch(function (error) {
@@ -62,7 +63,7 @@ describe('karmia-database-adapter-mysql', function () {
                     }
 
                     const connection = database.getConnection();
-                    expect(connection.constructor.name).to.be('Sequelize');
+                    expect(Object.getPrototypeOf(connection)).to.be(sequelize.prototype);
 
                     done();
                 });
