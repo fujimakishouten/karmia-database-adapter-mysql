@@ -39,6 +39,15 @@ describe('karmia-database-adapter-mysql', function () {
                 done();
             });
         });
+
+        it('Should get existing connection', function (done) {
+            const connection = {name: 'TEST_CONNECTION'},
+                database = adapter(options, connection);
+
+            expect(database.getConnection()).to.be(connection);
+
+            done();
+        });
     });
 
     describe('connect', function () {
@@ -185,9 +194,12 @@ describe('karmia-database-adapter-mysql', function () {
         before(function (done) {
             database.define(key, schema).sync().then(function () {
                 const table = database.table(key);
-                return Promise.all(fixture.map(function (data) {
-                    return table.set(data);
-                }));
+
+                return fixture.reduce(function (promise, data) {
+                    return promise.then(function () {
+                        return table.set(data);
+                    });
+                }, Promise.resolve());
             }).then(function () {
                 done();
             }).catch(function (error) {
@@ -840,9 +852,12 @@ describe('karmia-database-adapter-mysql', function () {
         before(function (done) {
             database.define(key, schema).sync().then(function () {
                 const table = database.table(key);
-                return Promise.all(fixture.map(function (data) {
-                    return table.set(data);
-                }));
+
+                return fixture.reduce(function (promise, data) {
+                    return promise.then(function () {
+                        return table.set(data);
+                    });
+                }, Promise.resolve());
             }).then(function () {
                 done();
             }).catch(function (error) {
