@@ -535,6 +535,37 @@ describe('karmia-database-adapter-mysql', function () {
                         done();
                     });
                 });
+
+                it('Projection specified', function (done) {
+                    const table = database.table(key),
+                        conditions = {
+                            user_id: {
+                                $in: [1, 2, 3]
+                            }
+                        },
+                        projection = {
+                            user_id: true,
+                            email: true,
+                            name: true
+                        };
+
+                    table.find(conditions, projection).then(function (result) {
+                        fixture.slice(0, 3).forEach(function (data, index) {
+                            expect(result[index]['user_id']).to.be(data['user_id']);
+                            expect(result[index]['email']).to.be(data['email']);
+                            expect(result[index]['name']).to.be(data['name']);
+                            expect(result[index]['birthday']).to.be(undefined);
+                            expect(result[index]['blood_type']).to.be(undefined);
+                            expect(result[index]['size']).to.eql(undefined);
+                            expect(result[index]['favorite_food']).to.be(undefined);
+                            expect(result[index]['dislikes_food']).to.be(undefined);
+                            expect(result[index]['color']).to.be(undefined);
+                            expect(result[index]['unit']).to.be(undefined);
+                        });
+
+                        done();
+                    });
+                });
             });
         });
 
