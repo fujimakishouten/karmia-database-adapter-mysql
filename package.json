@@ -1,6 +1,6 @@
 {
     "name": "karmia-database-adapter-mysql",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "MySQL adapter for Karmia Database",
     "homepage": "https://github.com/fujimakishouten/karmia-database-adapter-mysql",
     "license": "MIT",
